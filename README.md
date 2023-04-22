@@ -29,4 +29,35 @@ $$
 
    - The model's improved mean squared error and R2 scores demonstrate its potential as a more effective powerlifting performance metric.
 
-This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org/. You may download a copy of the data at https://openpowerlifting.gitlab.io/opl-csv/bulk-csv.html.
+This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org. You may download a copy of the data at https://data.openpowerlifting.org.
+
+## Instructions
+
+To run the script, you'll need Python installed on your system and some Python packages. Here are step-by-step instructions on how to install the required packages and run the script:
+
+1. Install Python: If you don't have Python installed, you can download and install it from the official website: https://www.python.org/downloads/. The script requires Python 3.6 or newer.
+
+2. Install required packages: Open a terminal or command prompt, and run the following command to install the necessary packages:
+
+```bash
+pip install pandas numpy scikit-learn matplotlib
+```
+
+This will install the following packages:
+
+- pandas: A library for data manipulation and analysis.
+- numpy: A library for numerical computing in Python.
+- scikit-learn: A library for machine learning and data mining in Python.
+- matplotlib: A library for creating static, animated, and interactive visualizations in Python.
+
+3. Save the script: Copy the provided script into a new file, and save it with a `.py` extension, e.g., `polylift_performance.py`.
+
+4. Run the script: In the terminal or command prompt, navigate to the folder where you saved the script, and run the following command:
+
+```bash
+python polylift_performance.py
+```
+
+5. Follow the prompts: The script will ask you to enter your gender, body weight, and total lifted weight. It will then output your custom points based on the trained polynomial regression models.
+
+Remember to download the dataset from here https://data.openpowerlifting.org and place the CSV file into the directory. Make sure to rename it openpowerlifting.csv
