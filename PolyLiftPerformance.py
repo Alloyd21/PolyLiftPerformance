@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 def main():
-    print("Loading CSV file...")
-    df = pd.read_csv('/Users/adamlloyd/Downloads/openpowerlifting.csv', low_memory=False)
+    print("\n Loading CSV file...")
+    df = pd.read_csv('openpowerlifting.csv', low_memory=False)
     print(f"{len(df):,} rows loaded")
     df['BodyweightKg'] = pd.to_numeric(df['BodyweightKg'])
     df['TotalKg'] = pd.to_numeric(df['TotalKg'])
@@ -31,7 +31,6 @@ def main():
     df = df[mask]
     print(f"{len(df):,} rows after removing outliers ")
 
-
     # Separate male and female data
     df_male = df[df['Sex'] == 'M']
     df_female = df[df['Sex'] == 'F']
@@ -44,20 +43,22 @@ def main():
     total_len = len(df_male_undersampled) + len(df_female)
     print(f"{total_len:,} rows after male undersampling: ")
 
-    print('\n')
-    print("Training gender-agnostic model...")
+    print("\n Training gender-agnostic model...")
     poly_balanced, model_balanced = train_polynomial_regression(df_balanced)
     print("\nTraining male model...")
-    poly_male_balanced, model_male_balanced = train_polynomial_regression(df_male_undersampled)
+    poly_male_balanced, model_male_balanced = train_polynomial_regression(
+        df_male_undersampled)
     print("\nTraining female model...")
-    poly_female_balanced, model_female_balanced = train_polynomial_regression(df_female)
+    poly_female_balanced, model_female_balanced = train_polynomial_regression(
+        df_female)
 
     return poly_balanced, model_balanced, poly_male_balanced, model_male_balanced, poly_female_balanced, model_female_balanced, df_balanced, df_male_undersampled, df_female
 
 def train_polynomial_regression(df, degree=3):
     X = df['BodyweightKg'].values.reshape(-1, 1)
     y = df['TotalKg'].values
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42)
     poly = PolynomialFeatures(degree=degree)
     X_train_poly = poly.fit_transform(X_train)
     X_test_poly = poly.transform(X_test)
@@ -91,7 +92,8 @@ def calculate_custom_points(gender, body_weight, total_lifted, model_male, poly_
         model = model_agnostic
         poly = poly_agnostic
     else:
-        raise ValueError("Invalid gender. Please enter 'male', 'female', or 'agnostic'.")
+        raise ValueError(
+            "Invalid gender. Please enter 'male', 'female', or 'agnostic'.")
 
     body_weight_poly = poly.transform([[body_weight]])
     predicted_total = model.predict(body_weight_poly)[0]
@@ -100,17 +102,20 @@ def calculate_custom_points(gender, body_weight, total_lifted, model_male, poly_
 
 def plot_data_and_models(df, df_male_undersampled, df_female, poly, model, poly_male, model_male, poly_female, model_female):
     plt.figure(figsize=(25, 15))
-    X = np.linspace(df['BodyweightKg'].min(), df['BodyweightKg'].max(), num=300)
+    X = np.linspace(df['BodyweightKg'].min(),
+                    df['BodyweightKg'].max(), num=300)
     X_poly = poly.transform(X.reshape(-1, 1))
     X_poly_male = poly_male.transform(X.reshape(-1, 1))
     X_poly_female = poly_female.transform(X.reshape(-1, 1))
-    
+
     y_pred = model.predict(X_poly)
     y_pred_male = model_male.predict(X_poly_male)
     y_pred_female = model_female.predict(X_poly_female)
 
-    plt.scatter(df_male_undersampled['BodyweightKg'], df_male_undersampled['TotalKg'], alpha=0.2, s=5, color='red')
-    plt.scatter(df_female['BodyweightKg'], df_female['TotalKg'], alpha=0.2, s=5, color='green')
+    plt.scatter(df_male_undersampled['BodyweightKg'],
+                df_male_undersampled['TotalKg'], alpha=0.2, s=5, color='red')
+    plt.scatter(df_female['BodyweightKg'],
+                df_female['TotalKg'], alpha=0.2, s=5, color='green')
     plt.plot(X, y_pred, label='Agnostic', color='blue')
     plt.plot(X, y_pred_male, label='Male', color='red')
     plt.plot(X, y_pred_female, label='Female', color='green')
@@ -120,18 +125,21 @@ def plot_data_and_models(df, df_male_undersampled, df_female, poly, model, poly_
     plt.legend()
     plt.savefig('bodyweight_vs_total_lifted_1500x1500.png', dpi=150)
 
-
 if __name__ == '__main__':
     poly, model, poly_male, model_male, poly_female, model_female, df, df_male_undersampled, df_female = main()
-    plot_data_and_models(df, df_male_undersampled, df_female, poly, model, poly_male, model_male, poly_female, model_female)
-    print("\n")
-    gender = input("Enter gender (male, female, or agnostic): ")
-    body_weight = float(input("Enter body weight in kilograms: "))
-    total_lifted = float(input("Enter total weight lifted (squat + bench press + deadlift) in kilograms: "))
+    plot_data_and_models(df, df_male_undersampled, df_female, poly,
+                         model, poly_male, model_male, poly_female, model_female)
 
-    custom_points = calculate_custom_points(gender, body_weight, total_lifted, model_male, poly_male, model_female, poly_female, model, poly)
-    print(f"Custom Points {gender}: {custom_points:.2f}")
+    gender = input("\n Enter gender (male, female, or agnostic): ")
+    body_weight = float(input("Enter body weight in kilograms: "))
+    total_lifted = float(input(
+        "Enter total weight lifted (squat + bench press + deadlift) in kilograms: "))
+
+    custom_points = calculate_custom_points(
+        gender, body_weight, total_lifted, model_male, poly_male, model_female, poly_female, model, poly)
+    print(f" \n Custom Points {gender}: {custom_points:.2f}")
 
     if gender.lower() in ['male', 'female']:
-        agnostic_points = calculate_custom_points('agnostic', body_weight, total_lifted, model_male, poly_male, model_female, poly_female, model, poly)
-        print(f"Gender-Agnostic Points: {agnostic_points:.2f}")
+        agnostic_points = calculate_custom_points(
+            'agnostic', body_weight, total_lifted, model_male, poly_male, model_female, poly_female, model, poly)
+        print(f"Gender-Agnostic Points: {agnostic_points:.2f} \n")

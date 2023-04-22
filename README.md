@@ -29,4 +29,4 @@ $$
 
    - The model's improved mean squared error and R2 scores demonstrate its potential as a more effective powerlifting performance metric.
 
-This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org. You may download a copy of the data at https://data.openpowerlifting.org.
+This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org/. You may download a copy of the data at https://openpowerlifting.gitlab.io/opl-csv/bulk-csv.html.
