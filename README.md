@@ -29,7 +29,7 @@ $$
 
    - The model's improved mean squared error and R2 scores demonstrate its potential as a more effective powerlifting performance metric.
 
-This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org. You may download a copy of the data at https://data.openpowerlifting.org.
+This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org/. You may download a copy of the data at https://openpowerlifting.gitlab.io/opl-csv/bulk-csv.html.
 
 ## Instructions
 
@@ -60,4 +60,4 @@ python polylift_performance.py
 
 5. Follow the prompts: The script will ask you to enter your gender, body weight, and total lifted weight. It will then output your custom points based on the trained polynomial regression models.
 
-Remember to download the dataset from here https://data.openpowerlifting.org and place the CSV file into the directory. Make sure to rename it openpowerlifting.csv
+Remember to download the dataset from here https://openpowerlifting.gitlab.io/opl-csv/bulk-csv.html and place the CSV file into the directory. Make sure to rename it openpowerlifting.csv
